@@ -2,12 +2,14 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button, Form as BootForm, Col, Row, Spinner } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
 
 import Api from "../global/api";
 
 import Food from "../Food";
 import Success from "../Success";
 import Error from "../Error";
+
 import "./info-form.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "../../App.css";
@@ -41,7 +43,8 @@ export default class InfoForm extends React.Component {
       activite: "",
       error: null,
       isLoading: true,
-      selected_products: {}
+      selected_products: {},
+      success: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -99,6 +102,7 @@ export default class InfoForm extends React.Component {
     await Api.sendInfo(info)
       .then(response => {
         console.log(response);
+        this.setState({ success: true });
       })
       .catch(error => {
         console.log(error);
@@ -112,7 +116,7 @@ export default class InfoForm extends React.Component {
   };
 
   render() {
-    const { error, isLoading, selected_products } = this.state;
+    const { error, isLoading, selected_products, success } = this.state;
     if (error) {
       return <div>Ошибка: {error.message}</div>;
     } else if (isLoading) {
@@ -124,7 +128,7 @@ export default class InfoForm extends React.Component {
     } else {
       return (
         <div className="center">
-          <h1 style={{ textAlign: "center" }}>Программа подсчета питания</h1>
+          <h2 style={{ textAlign: "center" }}>Программа подсчета питания</h2>
 
           <Formik
             initialValues={{
@@ -142,128 +146,139 @@ export default class InfoForm extends React.Component {
               autoComplete="off"
               style={{ margin: "5%", textAlign: "center" }}
             >
-              <BootForm.Group as={Row} controlId="formBasicEmail">
-                <BootForm.Label>Email</BootForm.Label>
-                <Field
-                  className="field"
-                  name="email"
-                  placeholder="ivan-neivanov@gmail.com"
-                  // invalid={touched.email && errors.email}
-                ></Field>
-                <ErrorMessage name="email">
-                  {message => <Error message={message} />}
-                </ErrorMessage>
-              </BootForm.Group>
-
-              <BootForm.Group as={Row} controlId="formBasicName">
-                <BootForm.Label>Имя</BootForm.Label>
-                <Field
-                  className="field"
-                  type="text"
-                  name="firstName"
-                  placeholder="Иван"
-                ></Field>
-                <ErrorMessage
-                  name="firstName"
-                  render={message => <Error message={message} />}
-                />
-              </BootForm.Group>
-
               <BootForm.Group as={Row}>
-                <BootForm.Label>Фамилия</BootForm.Label>
-                <Field
-                  className="field"
-                  type="text"
-                  name="lastName"
-                  placeholder="Неиванов"
-                ></Field>
-                <ErrorMessage
-                  name="lastName"
-                  render={message => <Error message={message} />}
-                />
-              </BootForm.Group>
+                <Col className="col" md={12}>
+                  <BootForm.Label column>Email</BootForm.Label>
+                  <Field
+                    className="input"
+                    label="Email"
+                    name="email"
+                    placeholder="ivan-neivanov@gmail.com"
 
+                    // invalid={touched.email && errors.email}
+                  ></Field>
+                  <ErrorMessage name="email">
+                    {message => <Error message={message} />}
+                  </ErrorMessage>
+                </Col>
+              </BootForm.Group>
               <BootForm.Group as={Row}>
-                <BootForm.Label>Рост, см</BootForm.Label>
-                <Field
-                  className="field"
-                  type="text"
-                  name="height"
-                  placeholder="175"
-                ></Field>
-                <ErrorMessage
-                  name="height"
-                  render={message => <Error message={message} />}
-                />
-              </BootForm.Group>
-
-              <BootForm.Group as={Row}>
-                <BootForm.Label>Вес</BootForm.Label>
-                <Field
-                  className="field"
-                  type="text"
-                  name="weight"
-                  placeholder="80"
-                ></Field>
-                <ErrorMessage
-                  name="weight"
-                  render={message => <Error message={message} />}
-                />
-              </BootForm.Group>
-
-              <BootForm.Group as={Row}>
-                <BootForm.Label>Возраст</BootForm.Label>
-                <Field
-                  className="field"
-                  type="text"
-                  name="age"
-                  placeholder="30"
-                ></Field>
-
-                <ErrorMessage
-                  name="age"
-                  render={message => <Error message={message} />}
-                />
-              </BootForm.Group>
-
-              <BootForm.Group as={Col}>
-                <Row
-                  sm={10}
-                  name="sex"
-                  value={this.state.sex}
-                  onChange={this.handleChange}
-                >
-                  <BootForm.Check
-                    value="male"
-                    type="radio"
-                    label="Мужчина"
-                    name="sex"
-                    id="formHorizontalRadios1"
-                    style={{ marginRight: "20px" }}
+                <Col className="col" md={6}>
+                  <BootForm.Label column>Имя</BootForm.Label>
+                  <Field
+                    className="input"
+                    type="text"
+                    name="firstName"
+                    placeholder="Иван"
+                  ></Field>
+                  <ErrorMessage
+                    name="firstName"
+                    render={message => <Error message={message} />}
                   />
-                  <BootForm.Check
-                    value="female"
-                    type="radio"
-                    label="Женщина"
-                    name="sex"
-                    id="formHorizontalRadios2"
+                </Col>
+
+                <Col className="col" md={6}>
+                  <BootForm.Label column>Фамилия</BootForm.Label>
+                  <Field
+                    className="input"
+                    type="text"
+                    name="lastName"
+                    placeholder="Неиванов"
+                  ></Field>
+                  <ErrorMessage
+                    name="lastName"
+                    render={message => <Error message={message} />}
                   />
-                </Row>
+                </Col>
               </BootForm.Group>
 
               <BootForm.Group as={Row}>
-                <BootForm.Label>Ваши пожелания</BootForm.Label>
-                <BootForm.Control
-                  name="target"
-                  as="select"
-                  value={this.state.value}
-                  onChange={this.handleChange}
-                >
-                  <option value={""}>...</option>
-                  <option value={"loss"}>Сбросить вес</option>
-                  <option value={"maintenance"}>Поддерживать форму</option>
-                  <option value={"gain"}>Набрать массу</option>
-                </BootForm.Control>
+                <Col className="col" md={4}>
+                  <BootForm.Label column>Рост, см</BootForm.Label>
+                  <Field
+                    className="input"
+                    type="text"
+                    name="height"
+                    placeholder="175"
+                  ></Field>
+                  <ErrorMessage
+                    name="height"
+                    render={message => <Error message={message} />}
+                  />
+                </Col>
+
+                <Col className="col" md={4}>
+                  <BootForm.Label column>Вес, кг</BootForm.Label>
+                  <Field
+                    className="input"
+                    type="text"
+                    name="weight"
+                    placeholder="80"
+                  ></Field>
+                  <ErrorMessage
+                    name="weight"
+                    render={message => <Error message={message} />}
+                  />
+                </Col>
+
+                <Col className="col" md={4}>
+                  <BootForm.Label column>Возраст</BootForm.Label>
+                  <Field
+                    className="input"
+                    type="text"
+                    name="age"
+                    placeholder="30"
+                  ></Field>
+
+                  <ErrorMessage
+                    name="age"
+                    render={message => <Error message={message} />}
+                  />
+                </Col>
+              </BootForm.Group>
+
+              <BootForm.Group as={Row}>
+                <BootForm.Group as={Col}>
+                  <Row
+                    sm={10}
+                    name="sex"
+                    value={this.state.sex}
+                    onChange={this.handleChange}
+                  >
+                    <BootForm.Check
+                      value="male"
+                      type="radio"
+                      label="Мужчина"
+                      name="sex"
+                      id="formHorizontalRadios1"
+                      style={{ marginRight: "20px" }}
+                    />
+                    <BootForm.Check
+                      value="female"
+                      type="radio"
+                      label="Женщина"
+                      name="sex"
+                      id="formHorizontalRadios2"
+                    />
+                  </Row>
+                </BootForm.Group>
+              </BootForm.Group>
+
+              <BootForm.Group as={Row}>
+                <Col className="col" md={12}>
+                  <BootForm.Label column>Ваши пожелания</BootForm.Label>
+                  <BootForm.Control
+                    name="target"
+                    as="select"
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                  >
+                    <option value={""}>...</option>
+                    <option value={"loss"}>Сбросить вес</option>
+                    <option value={"maintenance"}>Поддерживать форму</option>
+                    <option value={"gain"}>Набрать массу</option>
+                  </BootForm.Control>
+                </Col>
               </BootForm.Group>
               {/* <BootForm.Group as={Row}>
                 <BootForm.Label>
@@ -309,8 +324,17 @@ export default class InfoForm extends React.Component {
               </Button>
             </Form>
           </Formik>
-
-          <Success />
+          <Modal
+            show={success}
+            onHide={() => {
+              this.setState({ success: !success });
+            }}
+            centered={true}
+          >
+            <Modal.Header closeButton>
+              <Success success={success} />
+            </Modal.Header>
+          </Modal>
         </div>
       );
     }

@@ -20,28 +20,6 @@ class Api {
     return allFood;
   }
 
-  async getTime(category, activity, date) {
-    let time = [];
-    await axios
-      .get(`${baseURL}/services_v2/${activity}/${date}`, {
-        mode: "no-cors",
-        headers: {
-          "Access-Control-Allow-Origins": "*",
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        }
-      })
-      .then(function(response) {
-        time = response.data;
-        console.log(response);
-      })
-      .catch(function(error) {
-        // handle error
-        console.log(error);
-      });
-    return time;
-  }
-
   async sendInfo(info) {
     let data = {};
     await axios

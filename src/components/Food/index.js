@@ -5,16 +5,15 @@ import { Checkbox } from "antd";
 
 import Api from "../global/api";
 
-import { foodTypes } from "../../utils/utils";
+import { foodTypes, foodLimiters } from "../../utils/utils";
 import "bootstrap/dist/css/bootstrap.css";
 import "../../App.css";
 import "antd/dist/antd.css";
 
 export default class Food extends Component {
   state = {
-    count: 5,
-    defaultCount: 5,
-    groupedFood: {}
+    groupedFood: {},
+    foodLimiters: foodLimiters
   };
   componentDidMount() {
     const getAllFood = async () => {
@@ -37,10 +36,12 @@ export default class Food extends Component {
     return result;
   };
 
-  handleCount = () => {
-    let count = this.state.defaultCount;
-    count = count + this.state.count;
-    this.setState({ count });
+  handleCount = (event, type) => {
+    console.log(event, type);
+    const { foodLimiters } = this.state;
+    let count = foodLimiters.default;
+    count = count + foodLimiters[type];
+    this.setState({ foodLimiters: { ...foodLimiters, [type]: count } });
   };
 
   // sortFood = () => {
@@ -58,23 +59,21 @@ export default class Food extends Component {
   // };
 
   render() {
-    const { groupedFood, count } = this.state;
- 
+    const { groupedFood, foodLimiters } = this.state;
+
     const foodToRender = Object.keys(groupedFood).map(type => {
       return (
-        <>
-          <h6 key={type}>{foodTypes[type]}</h6>
+        <div key={type}>
+          <h6>{foodTypes[type]}</h6>
           {groupedFood[type].map((foodItem, index) => {
             return (
               <>
-                {index < count ? (
+                {index < foodLimiters[type] ? (
                   <Col key={index}>
                     <Checkbox
-                      name=" selected_products"
+                      name="selected_products"
                       value={foodItem._id}
-                      onChange={(event) =>
-                        this.props.handleProducts(event, type)
-                      }
+                      onChange={event => this.props.handleProducts(event, type)}
                     >
                       {foodItem.name}
                     </Checkbox>
@@ -85,8 +84,10 @@ export default class Food extends Component {
               </>
             );
           })}
-          <Button onClick={this.handleCount}>Показать больше</Button>
-        </>
+          <Button onClick={event => this.handleCount(event, type)}>
+            Показать больше
+          </Button>
+        </div>
       );
     });
     return (
