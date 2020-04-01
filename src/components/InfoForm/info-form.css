@@ -3,6 +3,24 @@
   padding-left: 10px;
 }
 
+@media screen and (min-width: 992px) {
+  body form {
+    margin: 5% 25%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  body form {
+    margin: 2.5% 14%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  form {
+    margin: 0 0;
+  }
+}
+
 .input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -27,6 +45,7 @@
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
+
 input:invalid {
   background-color: pink;
 

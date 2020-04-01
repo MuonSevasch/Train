@@ -40,7 +40,7 @@ export default class InfoForm extends React.Component {
       target: "",
       sex: "",
       count: undefined,
-      activite: "",
+      activityLevel: -1,
       error: null,
       isLoading: true,
       selected_products: {},
@@ -53,6 +53,7 @@ export default class InfoForm extends React.Component {
   componentDidMount() {
     this.setState({ selected_products: {} });
     this.setLoading();
+   
   }
 
   handleChange(event) {
@@ -87,7 +88,8 @@ export default class InfoForm extends React.Component {
 
   handleSubmit = async values => {
     const { email, firstName, lastName, height, weight, age } = values;
-    const { target, sex, selected_products } = this.state;
+    const { target, activityLevel, sex, selected_products } = this.state;
+    console.log(this.state)
     const info = {
       firstName,
       lastName,
@@ -97,6 +99,7 @@ export default class InfoForm extends React.Component {
       age,
       target,
       sex,
+      activityLevel,
       selected_products
     };
     await Api.sendInfo(info)
@@ -142,10 +145,7 @@ export default class InfoForm extends React.Component {
             validationSchema={infoSchema}
             onSubmit={this.handleSubmit}
           >
-            <Form
-              autoComplete="off"
-              style={{ margin: "5%", textAlign: "center" }}
-            >
+            <Form autoComplete="off" className="form">
               <BootForm.Group as={Row}>
                 <Col className="col" md={12}>
                   <BootForm.Label column>Email</BootForm.Label>
@@ -280,6 +280,8 @@ export default class InfoForm extends React.Component {
                   </BootForm.Control>
                 </Col>
               </BootForm.Group>
+
+
               {/* <BootForm.Group as={Row}>
                 <BootForm.Label>
                   Планируемое количество тренировок в неделю
@@ -295,21 +297,25 @@ export default class InfoForm extends React.Component {
                   <option value={2}>Уебать Стырта</option>
                   <option value={3}>Решить задачку по сопромату</option>
                 </BootForm.Control>
-              </BootForm.Group>
+              </BootForm.Group> */}
+
+
               <BootForm.Group as={Row}>
                 <BootForm.Label>Уровень активности</BootForm.Label>
                 <BootForm.Control
-                  name="activite"
+                  name="activityLevel"
                   as="select"
                   value={this.state.activite}
                   onChange={this.handleChange}
                 >
                   <option value={""}>...</option>
-                  <option value={"Новичок"}>Новичок</option>
-                  <option value={"Уебать"}>Уебать Стырта</option>
-                  <option value={"Задачка"}>Решить задачку по сопромату</option>
+                  <option value={0}>Очень низкий</option>
+                  <option value={1}>Низкий</option>
+                  <option value={2}>Средний</option>
+                  <option value={3}>Высокий</option>
+                  <option value={4}>Очень высокий</option>
                 </BootForm.Control>
-              </BootForm.Group> */}
+              </BootForm.Group>
 
               <Food
                 selected_products={selected_products}

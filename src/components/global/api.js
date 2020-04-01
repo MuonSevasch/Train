@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+
 import axios from "axios";
 
 const baseURL = "http://25.48.59.169:8080/public/api";
@@ -19,11 +19,25 @@ class Api {
 
     return allFood;
   }
+  async getProductsRequired() {
+    let data = {};
+    await axios
+      .get(`${baseURL}/userForms/productsRequired`)
+      .then(function(response) {
+        console.log(response);
+        data = response.data;
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
+    return data;
+  }
 
   async sendInfo(info) {
     let data = {};
     await axios
-      .post(`${baseURL}/userform`, info)
+      .post(`${baseURL}/userForms`, info)
       .then(response => {
         data = response;
         console.log(response);
