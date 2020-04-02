@@ -84,7 +84,11 @@ export default class Food extends Component {
                     </Col>
                   ) : (
                     <>
-                      <Button onClick={event => this.handleCount(event, type)}>
+                      <Button
+                        size="sm"
+                        variant="light"
+                        onClick={event => this.handleCount(event, type)}
+                      >
                         Показать больше
                       </Button>
                     </>
@@ -104,20 +108,13 @@ export default class Food extends Component {
           padding: 0,
           textAlign: "left"
         }}
-        // value={this.state.result}
-        // onChange={this.handleChange}
+    
       >
         <BootForm.Label>
           {" "}
           <h4> Ваши предпочтения на завтрак:</h4>
         </BootForm.Label>
-        {/* {this.state.food.map((obj, index) => {
-          return (
-            <Col key={index}>
-              <Checkbox value={obj.id}>{obj.id}</Checkbox>
-            </Col>
-          );
-        })} */}
+
         {foodToRender}
       </Checkbox.Group>
     );

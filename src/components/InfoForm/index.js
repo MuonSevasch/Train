@@ -89,7 +89,7 @@ export default class InfoForm extends React.Component {
   handleSubmit = async values => {
     const { email, firstName, lastName, height, weight, age } = values;
     const { target, activityLevel, sex, selected_products } = this.state;
-    console.log(this.state)
+   
     const info = {
       firstName,
       lastName,
@@ -301,6 +301,7 @@ export default class InfoForm extends React.Component {
 
 
               <BootForm.Group as={Row}>
+              <Col className="col" md={12}>
                 <BootForm.Label>Уровень активности</BootForm.Label>
                 <BootForm.Control
                   name="activityLevel"
@@ -315,6 +316,7 @@ export default class InfoForm extends React.Component {
                   <option value={3}>Высокий</option>
                   <option value={4}>Очень высокий</option>
                 </BootForm.Control>
+                </Col>
               </BootForm.Group>
 
               <Food
